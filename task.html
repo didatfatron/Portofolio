@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tugas JS - Didat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+
+  <!-- Tombol Kembali ke Portofolio di kanan atas -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="portofolio.html" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">
+      ← Kembali ke Portofolio
+    </a>
+  </div>
+
+  <section class="container mx-auto pt-20 pb-20 px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6">Tugas JavaScript: Kalkulator</h2>
+    <div class="max-w-sm mx-auto bg-gray-200 shadow p-6 rounded-lg border">
+      <input id="num1" type="number" placeholder="Angka 1" class="border p-2 w-full mb-4 rounded">
+      <input id="num2" type="number" placeholder="Angka 2" class="border p-2 w-full mb-4 rounded">
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <button onclick="hitung('tambah')" class="bg-gray-800 text-white p-2 rounded hover:bg-gray-900">+</button>
+        <button onclick="hitung('kurang')" class="bg-gray-800 text-white p-2 rounded hover:bg-gray-900">-</button>
+        <button onclick="hitung('kali')" class="bg-gray-800 text-white p-2 rounded hover:bg-gray-900">×</button>
+        <button onclick="hitung('bagi')" class="bg-gray-800 text-white p-2 rounded hover:bg-gray-900">÷</button>
+      </div>
+
+      <p id="hasil" class="mt-4 font-bold"></p>
+    </div>
+  </section>
+
+  <script>
+    function hitung(op) {
+      let a = parseFloat(document.getElementById('num1').value);
+      let b = parseFloat(document.getElementById('num2').value);
+      let result;
+
+      if (isNaN(a) || isNaN(b)) {
+        result = "Masukkan angka valid!";
+      } else {
+        switch (op) {
+          case "tambah":
+            result = a + b;
+            break;
+          case "kurang":
+            result = a - b;
+            break;
+          case "kali":
+            result = a * b;
+            break;
+          case "bagi":
+            result = (b === 0) ? "Tidak bisa dibagi 0!" : a / b;
+            break;
+        }
+        result = "Hasil: " + result;
+      }
+
+      document.getElementById('hasil').innerText = result;
+    }
+  </script>
+</body>
+</html>

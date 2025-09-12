@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Kasir Kopi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Tombol Kembali ke Portofolio -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="portofolio.html" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">
+      ← Kembali ke Portofolio
+    </a>
+  </div>
+
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6 text-center"> Aplikasi Kasir Kopi</h1>
+
+    <!-- Menu -->
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+      <h2 class="text-lg font-semibold mb-4">Menu Minuman</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <button onclick="tambahBarang('Espresso', 8000)" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">Espresso - Rp 8.000</button>
+        <button onclick="tambahBarang('Coffee Latte', 15000)" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">Coffee Latte - Rp 15.000</button>
+        <button onclick="tambahBarang('Cappuccino', 15000)" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">Cappuccino - Rp 15.000</button>
+        <button onclick="tambahBarang('Americano', 10000)" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">Americano - Rp 10.000</button>
+        <button onclick="tambahBarang('Long Black', 10000)" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">Long Black - Rp 10.000</button>
+      </div>
+    </div>
+
+    <!-- Daftar Belanja -->
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+      <h2 class="text-lg font-semibold mb-4">Daftar Belanja</h2>
+      <table class="w-full border">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border px-4 py-2">Nama Barang</th>
+            <th class="border px-4 py-2">Harga</th>
+          </tr>
+        </thead>
+        <tbody id="daftarBelanja"></tbody>
+      </table>
+      <p class="mt-4 font-bold">Total: Rp <span id="totalBelanja">0</span></p>
+    </div>
+
+    <!-- Pembayaran -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <h2 class="text-lg font-semibold mb-4">Pembayaran</h2>
+      <div class="flex space-x-4 mb-4">
+        <input id="uangBayar" type="number" placeholder="Uang Bayar" class="border rounded-lg p-2 w-40">
+        <button onclick="resetKasir()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+          Reset
+        </button>
+      </div>
+      <p class="mt-2 font-bold">Kembalian: Rp <span id="kembalian">0</span></p>
+      <button onclick="cetakStruk()" class="mt-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900">
+        Cetak Struk
+      </button>
+    </div>
+
+    <!-- Struk -->
+    <div id="struk" class="bg-white shadow-md rounded-lg p-6 mt-6 hidden">
+      <h2 class="text-xl font-bold text-center mb-4">🧾 Struk Pembelian</h2>
+      <div id="isiStruk" class="text-sm font-mono whitespace-pre-line"></div>
+    </div>
+  </div>
+
+  <script>
+    let total = 0;
+    let belanja = [];
+
+    function tambahBarang(nama, harga) {
+      const table = document.getElementById('daftarBelanja');
+      const row = `<tr>
+                    <td class="border px-4 py-2">${nama}</td>
+                    <td class="border px-4 py-2">Rp ${harga}</td>
+                   </tr>`;
+      table.innerHTML += row;
+
+      belanja.push({ nama, harga });
+      total += harga;
+      document.getElementById('totalBelanja').textContent = total;
+    }
+
+    function cetakStruk() {
+      const bayar = parseInt(document.getElementById('uangBayar').value);
+      const kembalian = bayar - total;
+
+      if (isNaN(bayar) || bayar < total) {
+        alert("Transaksi tidak valid! Masukkan uang bayar yang cukup.");
+        return;
+      }
+
+      let strukText = "===== Kedai Kopi Didat =====\n";
+      belanja.forEach(item => {
+        strukText += `${item.nama} - Rp ${item.harga}\n`;
+      });
+      strukText += "---------------------------\n";
+      strukText += `Total   : Rp ${total}\n`;
+      strukText += `Bayar   : Rp ${bayar}\n`;
+      strukText += `Kembali : Rp ${kembalian}\n`;
+      strukText += "===========================\n";
+      strukText += "Terima kasih sudah berbelanja!";
+
+      document.getElementById('isiStruk').textContent = strukText;
+      document.getElementById('struk').classList.remove('hidden');
+    }
+
+    function resetKasir() {
+      total = 0;
+      belanja = [];
+
+      document.getElementById('daftarBelanja').innerHTML = '';
+      document.getElementById('totalBelanja').textContent = '0';
+      document.getElementById('uangBayar').value = '';
+      document.getElementById('kembalian').textContent = '0';
+      document.getElementById('isiStruk').textContent = '';
+      document.getElementById('struk').classList.add('hidden');
+    }
+  </script>
+
+</body>
+</html>
